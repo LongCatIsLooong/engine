@@ -193,6 +193,26 @@ void main() {
     expect(r4, equals(r3));
   });
 
+  test('Rect.lerp preserves size', () {
+    const Rect initialRect = Rect.fromLTWH(
+      0.0,
+      0.0,
+      double.minPositive,
+      double.minPositive,
+    );
+
+    for (int step = 0; step <= 30; step += 1) {
+      final Rect interpolation = Rect.lerp(
+        initialRect,
+        initialRect.shift(const Offset(1, 1)),
+        1.0 * step,
+      )!;
+
+      expect(interpolation.width, initialRect.width);
+      expect(interpolation.height, initialRect.height);
+    }
+  });
+
   test('RRect.fromRectXY', () {
     const Rect baseRect = Rect.fromLTWH(1.0, 3.0, 5.0, 7.0);
     final RRect r = RRect.fromRectXY(baseRect, 1.0, 1.0);

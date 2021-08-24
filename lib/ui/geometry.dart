@@ -630,19 +630,19 @@ class Size extends OffsetBase {
 /// ```
 class Rect {
   /// Construct a rectangle from its left, top, right, and bottom edges.
-  @pragma('vm:entry-point')
-  const Rect.fromLTRB(this.left, this.top, this.right, this.bottom)
-      : assert(left != null),
-        assert(top != null),
-        assert(right != null),
-        assert(bottom != null);
+  const Rect.fromLTRB(double left, double top, double right, double bottom) : this.fromLTWH(left, top, right - left, bottom - top);
 
   /// Construct a rectangle from its left and top edges, its width, and its
   /// height.
   ///
   /// To construct a [Rect] from an [Offset] and a [Size], you can use the
   /// rectangle constructor operator `&`. See [Offset.&].
-  const Rect.fromLTWH(double left, double top, double width, double height) : this.fromLTRB(left, top, left + width, top + height);
+  @pragma('vm:entry-point')
+  const Rect.fromLTWH(this.left, this.top, this.width, this.height)
+      : assert(left != null),
+        assert(top != null),
+        assert(width != null),
+        assert(height != null);
 
   /// Construct a rectangle that bounds the given circle.
   ///
@@ -681,16 +681,16 @@ class Rect {
   final double top;
 
   /// The offset of the right edge of this rectangle from the x axis.
-  final double right;
+  double get right => left + width;
 
   /// The offset of the bottom edge of this rectangle from the y axis.
-  final double bottom;
+  double get bottom => top + height;
 
   /// The distance between the left and right edges of this rectangle.
-  double get width => right - left;
+  final double width;
 
   /// The distance between the top and bottom edges of this rectangle.
-  double get height => bottom - top;
+  final double height;
 
   /// The distance between the upper-left corner and the lower-right corner of
   /// this rectangle.
@@ -731,7 +731,7 @@ class Rect {
   /// To translate a rectangle by separate x and y components rather than by an
   /// [Offset], consider [translate].
   Rect shift(Offset offset) {
-    return Rect.fromLTRB(left + offset.dx, top + offset.dy, right + offset.dx, bottom + offset.dy);
+    return Rect.fromLTWH(left + offset.dx, top + offset.dy, width, height);
   }
 
   /// Returns a new rectangle with translateX added to the x components and
@@ -740,7 +740,7 @@ class Rect {
   /// To translate a rectangle by an [Offset] rather than by separate x and y
   /// components, consider [shift].
   Rect translate(double translateX, double translateY) {
-    return Rect.fromLTRB(left + translateX, top + translateY, right + translateX, bottom + translateY);
+    return Rect.fromLTWH(left + translateX, top + translateY, width, height);
   }
 
   /// Returns a new rectangle with edges moved outwards by the given delta.
@@ -870,17 +870,17 @@ class Rect {
         return null;
       } else {
         final double k = 1.0 - t;
-        return Rect.fromLTRB(a.left * k, a.top * k, a.right * k, a.bottom * k);
+        return Rect.fromLTWH(a.left * k, a.top * k, a.width * k, a.height * k);
       }
     } else {
       if (a == null) {
-        return Rect.fromLTRB(b.left * t, b.top * t, b.right * t, b.bottom * t);
+        return Rect.fromLTWH(b.left * t, b.top * t, b.width * t, b.height * t);
       } else {
-        return Rect.fromLTRB(
+        return Rect.fromLTWH(
           _lerpDouble(a.left, b.left, t),
           _lerpDouble(a.top, b.top, t),
-          _lerpDouble(a.right, b.right, t),
-          _lerpDouble(a.bottom, b.bottom, t),
+          _lerpDouble(a.width, b.width, t),
+          _lerpDouble(a.height, b.height, t),
         );
       }
     }
@@ -895,12 +895,12 @@ class Rect {
     return other is Rect
         && other.left   == left
         && other.top    == top
-        && other.right  == right
-        && other.bottom == bottom;
+        && other.width  == width
+        && other.height == height;
   }
 
   @override
-  int get hashCode => hashValues(left, top, right, bottom);
+  int get hashCode => hashValues(left, top, width, height);
 
   @override
   String toString() => 'Rect.fromLTRB(${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)})';
