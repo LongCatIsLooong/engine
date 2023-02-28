@@ -36,7 +36,7 @@ class Paragraph : public RefCountedDartWrappable<Paragraph> {
   double ideographicBaseline();
   bool didExceedMaxLines();
 
-  void layout(double width);
+  void layout(double width, bool applyRoundingHack);
   void paint(Canvas* canvas, double x, double y);
 
   tonic::Float32List getRectsForRange(unsigned start,

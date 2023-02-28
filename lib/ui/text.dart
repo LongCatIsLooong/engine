@@ -2744,15 +2744,15 @@ class Paragraph extends NativeFieldWrapperClass1 {
   /// Computes the size and position of each glyph in the paragraph.
   ///
   /// The [ParagraphConstraints] control how wide the text is allowed to be.
-  void layout(ParagraphConstraints constraints) {
-    _layout(constraints.width);
+  void layout(ParagraphConstraints constraints, { bool applyRoundingHack = true }) {
+    _layout(constraints.width, applyRoundingHack);
     assert(() {
       _needsLayout = false;
       return true;
     }());
   }
-  @Native<Void Function(Pointer<Void>, Double)>(symbol: 'Paragraph::layout', isLeaf: true)
-  external void _layout(double width);
+  @Native<Void Function(Pointer<Void>, Double, Bool)>(symbol: 'Paragraph::layout', isLeaf: true)
+  external void _layout(double width, bool applyRoundingHack);
 
   List<TextBox> _decodeTextBoxes(Float32List encoded) {
     final int count = encoded.length ~/ 5;

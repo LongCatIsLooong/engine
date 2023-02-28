@@ -2202,7 +2202,7 @@ extension SkParagraphExtension on SkParagraph {
     double y,
   );
   external SkTextRange getWordBoundary(double position);
-  external void layout(double width);
+  external void layout(double width, { bool applyRoundingHack = true });
   external void delete();
 }
 

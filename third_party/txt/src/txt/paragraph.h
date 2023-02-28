@@ -141,7 +141,7 @@ class Paragraph {
 
   // Layout calculates the positioning of all the glyphs. Must call this method
   // before Painting and getting any statistics from this class.
-  virtual void Layout(double width) = 0;
+  virtual void Layout(double width, bool applyRoundingHack) = 0;
 
   // Paints the laid out text onto the supplied DisplayListBuilder at
   // (x, y) offset from the origin. Only valid after Layout() is called.

@@ -51,7 +51,7 @@ class ParagraphSkia : public Paragraph {
 
   bool DidExceedMaxLines() override;
 
-  void Layout(double width) override;
+  void Layout(double width, bool applyRoundingHack) override;
 
   bool Paint(flutter::DisplayListBuilder* builder, double x, double y) override;
 

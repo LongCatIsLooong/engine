@@ -655,7 +655,7 @@ abstract class Paragraph {
   double get alphabeticBaseline;
   double get ideographicBaseline;
   bool get didExceedMaxLines;
-  void layout(ParagraphConstraints constraints);
+  void layout(ParagraphConstraints constraints, { bool applyRoundingHack = true });
   List<TextBox> getBoxesForRange(int start, int end,
       {BoxHeightStyle boxHeightStyle = BoxHeightStyle.tight,
       BoxWidthStyle boxWidthStyle = BoxWidthStyle.tight});

@@ -217,10 +217,10 @@ bool ParagraphSkia::DidExceedMaxLines() {
   return paragraph_->didExceedMaxLines();
 }
 
-void ParagraphSkia::Layout(double width) {
+void ParagraphSkia::Layout(double width, bool applyRoundingHack) {
   line_metrics_.reset();
   line_metrics_styles_.clear();
-  paragraph_->layout(width);
+  paragraph_->layout(width, applyRoundingHack);
 }
 
 bool ParagraphSkia::Paint(DisplayListBuilder* builder, double x, double y) {

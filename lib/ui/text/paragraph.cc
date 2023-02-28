@@ -54,8 +54,8 @@ bool Paragraph::didExceedMaxLines() {
   return m_paragraph->DidExceedMaxLines();
 }
 
-void Paragraph::layout(double width) {
-  m_paragraph->Layout(width);
+void Paragraph::layout(double width, bool applyRoundingHack) {
+  m_paragraph->Layout(width, applyRoundingHack);
 }
 
 void Paragraph::paint(Canvas* canvas, double x, double y) {

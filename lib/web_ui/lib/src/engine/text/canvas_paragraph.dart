@@ -89,7 +89,7 @@ class CanvasParagraph implements ui.Paragraph {
   late final TextPaintService _paintService = TextPaintService(this);
 
   @override
-  void layout(ui.ParagraphConstraints constraints) {
+  void layout(ui.ParagraphConstraints constraints, { bool applyRoundingHack = true }) {
     // When constraint width has a decimal place, we floor it to avoid getting
     // a layout width that's higher than the constraint width.
     //
