@@ -788,7 +788,7 @@ class CkParagraph extends SkiaObject<SkParagraph> implements ui.Paragraph {
   }
 
   @override
-  void layout(ui.ParagraphConstraints constraints) {
+  void layout(ParagraphConstraints constraints, { bool applyRoundingHack = true }) {
     if (_lastLayoutConstraints == constraints) {
       return;
     }

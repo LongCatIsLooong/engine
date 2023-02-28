@@ -51,6 +51,14 @@ void testMain() {
       }
     });
 
+    test('can turn off rounding hack', () {
+      final ui.Paragraph paragraph = (ui.ParagraphBuilder(ui.ParagraphStyle(fontSize: 1.5))..addText('ABC')).build();
+      paragraph.layout(const ui.ParagraphConstraints(width: 4.6), applyRoundingHack: false);
+
+      expect(paragraph.computeLineMetrics().length, 1);
+      expect((paragraph.computeLineMetrics()[0].width - 4.5).abs(), lessThanOrEqualTo(0.0001));
+    });
+
     // Regression test for https://github.com/flutter/flutter/issues/78550
     test('getBoxesForRange works for LTR text in an RTL paragraph', () {
       // Create builder for an RTL paragraph.
