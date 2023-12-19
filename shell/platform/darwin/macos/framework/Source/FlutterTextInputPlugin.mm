@@ -835,22 +835,37 @@ static char markerKey;
     _activeModel->BeginComposing();
   }
 
+  // Input string may be NSString or NSAttributedString.
+  const BOOL isAttributedString = [string isKindOfClass:[NSAttributedString class]];
+
   if (replacementRange.location != NSNotFound) {
     // According to the NSTextInputClient documentation replacementRange is
     // computed from the beginning of the marked text. That doesn't seem to be
     // the case, because in situations where the replacementRange is actually
     // specified (i.e. when switching between characters equivalent after long
     // key press) the replacementRange is provided while there is no composition.
-    _activeModel->SetComposingRange(
-        flutter::TextRange(replacementRange.location,
-                           replacementRange.location + replacementRange.length),
-        0);
+    const flutter::TextRange composingRange = flutter::TextRange(
+                                 replacementRange.location,
+                                 replacementRange.location + replacementRange.length),
+                             if (isAttributedString) {
+      std::vector<flutter::TextRange> textRanges = {};
+      [string enumerateAttributes:NSUnderlineStyleAttributeName,
+                          InRange:NSRangeMake(0, [string length]) options:0
+                       usingBlock:^(id value, NSRange range, BOOL* stop) {
+                         if ([(NSNumber*)value integerValue] > 1) {
+                           textRanges.push_back(std::move(
+                               flutter::TextRange(range.location, range.location + range.length)));
+                         }
+                       }];
+      _activeModel->SetComposingRange(composingRange, 0, std::move(textRanges));
+    }
+    else {
+      _activeModel->SetComposingRange(composingRange, 0);
+    }
   }
 
   flutter::TextRange composingBeforeChange = _activeModel->composing_range();
   flutter::TextRange selectionBeforeChange = _activeModel->selection();
-  // Input string may be NSString or NSAttributedString.
-  BOOL isAttributedString = [string isKindOfClass:[NSAttributedString class]];
   std::string marked_text = isAttributedString ? [[string string] UTF8String] : [string UTF8String];
   _activeModel->UpdateComposingText(marked_text);
 

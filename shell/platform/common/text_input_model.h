@@ -49,7 +49,7 @@ class TextInputModel {
   // call |SetText| instead.
   bool SetComposingRange(const TextRange& range,
                          size_t cursor_offset,
-                         const TextRange& activeClauseRange = nullptr);
+                         const std::vector<TextRange>& activeClauseRange = {});
 
   // Begins IME composing mode.
   //
@@ -227,7 +227,7 @@ class TextInputModel {
   // Currently only set on macOS, when an IME highlights one of the clause
   // segments in the composing region (a typical behavior of Japanese IMEs).
   // Set to nullptr if there are no active segments.
-  TextRange active_clause_range_;
+  const std::vector<TextRange> activeClauseRange = {};
   bool composing_ = false;
 };
 
