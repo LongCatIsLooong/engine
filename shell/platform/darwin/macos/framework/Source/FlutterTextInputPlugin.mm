@@ -67,9 +67,9 @@ static NSString* const kInputActionNewline = @"TextInputAction.newline";
 
 #pragma mark - Enums
 /**
- * The affinity of the current cursor position. If the cursor is at a position representing
- * a line break, the cursor may be drawn either at the end of the current line (upstream)
- * or at the beginning of the next (downstream).
+ * The affinity of the current cursor position. If the cursor is at a position
+ * representing a soft line break, the cursor may be drawn either at the end of
+ * the current line (upstream) or at the beginning of the next (downstream).
  */
 typedef NS_ENUM(NSUInteger, FlutterTextAffinity) {
   kFlutterTextAffinityUpstream,
@@ -849,7 +849,6 @@ static char markerKey;
 
   flutter::TextRange composingBeforeChange = _activeModel->composing_range();
   flutter::TextRange selectionBeforeChange = _activeModel->selection();
-
   // Input string may be NSString or NSAttributedString.
   BOOL isAttributedString = [string isKindOfClass:[NSAttributedString class]];
   std::string marked_text = isAttributedString ? [[string string] UTF8String] : [string UTF8String];

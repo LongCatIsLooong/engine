@@ -47,7 +47,9 @@ class TextInputModel {
   // To update both the text and the selection/composing range within the text
   // (for instance, when the framework sends its latest text editing state),
   // call |SetText| instead.
-  bool SetComposingRange(const TextRange& range, size_t cursor_offset);
+  bool SetComposingRange(const TextRange& range,
+                         size_t cursor_offset,
+                         const TextRange& activeClauseRange = nullptr);
 
   // Begins IME composing mode.
   //
@@ -221,6 +223,11 @@ class TextInputModel {
   std::u16string text_;
   TextRange selection_ = TextRange(0);
   TextRange composing_range_ = TextRange(0);
+  // The range of the current active segment in the composing range, if any.
+  // Currently only set on macOS, when an IME highlights one of the clause
+  // segments in the composing region (a typical behavior of Japanese IMEs).
+  // Set to nullptr if there are no active segments.
+  TextRange active_clause_range_;
   bool composing_ = false;
 };
 
