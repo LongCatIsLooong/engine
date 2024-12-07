@@ -338,6 +338,17 @@ class FlutterView {
   ///  * [MediaQuery.of], a simpler mechanism to access this data.
   List<DisplayFeature> get displayFeatures => _viewConfiguration.displayFeatures;
 
+  /// A [TextScaler] that reflects the user's platform accessibility font size
+  /// preferences at the time when this getter is accessed.
+  ///
+  /// The returned [TextScaler]'s `==` operator is overridden such that when
+  /// the user changes the platform font size preference, the new [TextScaler]
+  /// returned by this getter is considered not equal to the [TextScaler]
+  /// returned from this getter.
+  ///
+  /// When this changes, [PlatformDispatcher.onTextScaleFactorChanged] is called.
+  TextScaler get textScaler => platformDispatcher._systemTextScaler;
+
   /// Updates the view's rendering on the GPU with the newly provided [Scene].
   ///
   /// This function must be called within the scope of the
